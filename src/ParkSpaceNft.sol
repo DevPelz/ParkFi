@@ -6,8 +6,15 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract ParkSpaceNFT is ERC721URIStorage, Ownable {
     error NotTokenOwner();
     error NotWePark();
-    address private weParkContract;
-    constructor()
+    address private ParkFiContract;
+
+    event TokenURIUpdated(
+        uint256 indexed tokenId,
+        string tokenURI
+    );
+
+    event ContractAddressUpdated(address indexed newAddress);
+        constructor()
         ERC721("Park Space NFT", "ParkSpaceNFT")
         Ownable(msg.sender)
     {}
@@ -17,10 +24,12 @@ contract ParkSpaceNFT is ERC721URIStorage, Ownable {
         string memory _tokenURI
     ) public onlyOwner {
         _setTokenURI(_tokenId, _tokenURI);
+        emit TokenURIUpdated(_tokenId, _tokenURI);
     }
 
-    function setWeParkContractAddress(address _newAddress) public onlyOwner {
-        weParkContract = _newAddress;
+    function setParkFiContractAddress(address _newAddress) public onlyOwner {
+        ParkFiContract = _newAddress;
+        emit ContractAddressUpdated(_newAddress);
     }
 
     function ERC721Mint(
@@ -28,8 +37,7 @@ contract ParkSpaceNFT is ERC721URIStorage, Ownable {
         uint256 _tokenId,
         string memory _tokenURI
     ) external {
-        // require(msg.sender == weParkContract, "Only market contract can mint");
-        if (msg.sender != weParkContract) {
+        if (msg.sender != ParkFiContract) {
             revert NotWePark();
         }
         _safeMint(_to, _tokenId);
