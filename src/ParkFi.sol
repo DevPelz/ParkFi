@@ -228,11 +228,11 @@ contract ParkFi is Ownable {
     constructor(
         address _parkToken,
         address _parkSpace,
-        address _weParkMembership
+        address _ParkMembership
     ) Ownable(msg.sender) {
         parkToken = IERC20(_parkToken);
         parkSapceNFT = NFTInterface(_parkSpace);
-        ParkMembershipNFT = NFTInterface(_weParkMembership);
+        ParkMembershipNFT = NFTInterface(_ParkMembership);
     }
 
     function getParkToken() public view returns (IERC20) {
