@@ -1,72 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
-interface IERC20 {
-    event Transfer(address indexed from, address indexed to, uint256 value);
 
-    event Approval(
-        address indexed owner,
-        address indexed spender,
-        uint256 value
-    );
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/interfaces/IERC20Metadata.sol";
+import {IERC20Errors} from "@openzeppelin/contracts/interfaces/draft-IERC6093.sol";
 
-    function totalSupply() external view returns (uint256);
-
-    function balanceOf(address account) external view returns (uint256);
-
-    function transfer(address to, uint256 value) external returns (bool);
-
-    function allowance(
-        address owner,
-        address spender
-    ) external view returns (uint256);
-
-    function approve(address spender, uint256 value) external returns (bool);
-
-    function transferFrom(
-        address from,
-        address to,
-        uint256 value
-    ) external returns (bool);
-}
-
-interface IERC20Metadata is IERC20 {
-    function name() external view returns (string memory);
-
-    function symbol() external view returns (string memory);
-
-    function decimals() external view returns (uint8);
-}
-
-abstract contract Context {
-    function _msgSender() internal view virtual returns (address) {
-        return msg.sender;
-    }
-
-    function _msgData() internal view virtual returns (bytes calldata) {
-        return msg.data;
-    }
-}
-
-interface IERC20Errors {
-    error ERC20InsufficientBalance(
-        address sender,
-        uint256 balance,
-        uint256 needed
-    );
-
-    error ERC20InvalidSender(address sender);
-    error ERC20InvalidReceiver(address receiver);
-
-    error ERC20InsufficientAllowance(
-        address spender,
-        uint256 allowance,
-        uint256 needed
-    );
-
-    error ERC20InvalidApprover(address approver);
-
-    error ERC20InvalidSpender(address spender);
-}
 
 contract ParkToken is Context, IERC20, IERC20Metadata, IERC20Errors {
     mapping(address => uint256) private _balances;
