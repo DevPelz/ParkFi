@@ -1,45 +1,44 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity 0.8.26;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-contract ParkFiMembershipNFT is ERC721URIStorage, Ownable {
-    error NotTokenOwner();
-    error NotParkFi();
-    address private ParkFiContract;
-    constructor()
-        ERC721("ParkFi Membership NFT", "ParkFiMembership")
-        Ownable(msg.sender)
-    {}
 
-    function updateTokenURI(
-        uint256 _tokenId,
-        string memory _tokenURI
-    ) public onlyOwner {
-        _setTokenURI(_tokenId, _tokenURI);
+contract MembershipNft is ERC721URIStorage, Ownable{
+
+    address public ParkFiAddress;
+    uint private tokenId;
+    string public URI;
+
+
+    error UnAuthorized();
+
+    event MembershipMinted(address indexed _to, uint256 indexed _tId);
+    event terminated(uint256 indexed _tId);
+    constructor(string memory _URI) ERC721("Membership NFT", "MNT") Ownable(msg.sender){
+       URI = _URI;
     }
 
-    function setParkFiContractAddress(address _newAddress) public onlyOwner {
-        ParkFiContract = _newAddress;
+    function setParkFiAddress(address _parkFi) external onlyOwner{
+        ParkFiAddress = _parkFi;
     }
 
-    function ERC721Mint(
-        address _to,
-        uint256 _tokenId,
-        string memory _tokenURI
-    ) external {
-        // require(msg.sender == ParkFiContract, "Only market contract can mint");
-        if (msg.sender != ParkFiContract) {
-            revert NotParkFi();
+    function MintMembership(address _to) external {
+        if(msg.sender != ParkFiAddress){
+            revert UnAuthorized();
         }
-        _safeMint(_to, _tokenId);
-        _setTokenURI(_tokenId, _tokenURI);
+        tokenId++;
+        _safeMint(_to, tokenId);
+        _setTokenURI(tokenId, URI);
+
+        emit MembershipMinted(_to, tokenId);
     }
 
-    function burn(uint256 tokenId) public virtual {
-        if (msg.sender != ownerOf(tokenId)) {
-            revert NotTokenOwner();
+    function terminateMembership(uint256 _tokenId) external {
+        if(msg.sender != ParkFiAddress){
+            revert UnAuthorized();
         }
-        _burn(tokenId);
+        _burn(_tokenId);
+        emit terminated(_tokenId);
     }
 }
