@@ -28,8 +28,8 @@ contract ParkingSpaceNFT is ERC721URIStorage, Ownable{
             revert UnAuthorized();
         }
         tokenId++;
-        _setTokenURI(tokenId, URI);
         _safeMint(_to, tokenId);
+        _setTokenURI(tokenId, URI);
 
         emit SpaceMinted(_to, tokenId);
     }
