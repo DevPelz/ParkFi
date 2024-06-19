@@ -1,0 +1,1 @@
+genABI:; forge b && forge inspect MembershipNft abi > ../Frontend/src/generated/abi/MembershipNft.json && forge inspect ParkFi abi > ../Frontend/src/generated/abi/ParkFi.json && forge inspect ParkToken abi > ../Frontend/src/generated/abi/ParkToken.json && forge inspect ParkingSpaceNFT abi > ../Frontend/src/generated/abi/ParkingSpaceNFT.json
