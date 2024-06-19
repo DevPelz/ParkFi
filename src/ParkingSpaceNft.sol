@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract ParkingSpaceNFT is ERC721URIStorage, Ownable{
 
     address public ParkFiAddress;
-    uint private tokenId;
+    uint public tokenId;
     string public URI;
 
 
