@@ -61,7 +61,7 @@ contract ParkFi is Ownable {
         private membershipIdToMembershipMetadata;
     mapping(address => uint256[]) private userCurrentSpaceIds;
 
-    event ParkSpaceMinted(uint256 _id, string _tokenURI);
+    event ParkSpaceMinted(uint256 indexed _tokenid, string _tokenURI);
     event ParkSpaceNftSet(address _address);
     event ParkFiMembershipNftSet(address _address);
     event ParkFiMembershipSelected(
@@ -189,7 +189,7 @@ contract ParkFi is Ownable {
         return parkSapceNFT;
     }
 
-    function getWeParkMembershipNFT() public view returns (NFTInterface) {
+    function getParkFiMembershipNFT() public view returns (NFTInterface) {
         return ParkMembershipNFT;
     }
 

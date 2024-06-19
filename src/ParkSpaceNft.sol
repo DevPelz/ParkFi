@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 contract ParkSpaceNFT is ERC721URIStorage, Ownable {
     error NotTokenOwner();
-    error NotWePark();
+    error NotParkFi();
     address private ParkFiContract;
 
     event TokenURIUpdated(
@@ -38,7 +38,7 @@ contract ParkSpaceNFT is ERC721URIStorage, Ownable {
         string memory _tokenURI
     ) external {
         if (msg.sender != ParkFiContract) {
-            revert NotWePark();
+            revert NotParkFi();
         }
         _safeMint(_to, _tokenId);
         _setTokenURI(_tokenId, _tokenURI);

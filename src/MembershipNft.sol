@@ -3,12 +3,12 @@ pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-contract WeParkMembershipNFT is ERC721URIStorage, Ownable {
+contract ParkFiMembershipNFT is ERC721URIStorage, Ownable {
     error NotTokenOwner();
-    error NotWePark();
-    address private weParkContract;
+    error NotParkFi();
+    address private ParkFiContract;
     constructor()
-        ERC721("WePark Membership NFT", "WeParkMembership")
+        ERC721("ParkFi Membership NFT", "ParkFiMembership")
         Ownable(msg.sender)
     {}
 
@@ -19,8 +19,8 @@ contract WeParkMembershipNFT is ERC721URIStorage, Ownable {
         _setTokenURI(_tokenId, _tokenURI);
     }
 
-    function setWeParkContractAddress(address _newAddress) public onlyOwner {
-        weParkContract = _newAddress;
+    function setParkFiContractAddress(address _newAddress) public onlyOwner {
+        ParkFiContract = _newAddress;
     }
 
     function ERC721Mint(
@@ -28,9 +28,9 @@ contract WeParkMembershipNFT is ERC721URIStorage, Ownable {
         uint256 _tokenId,
         string memory _tokenURI
     ) external {
-        // require(msg.sender == weParkContract, "Only market contract can mint");
-        if (msg.sender != weParkContract) {
-            revert NotWePark();
+        // require(msg.sender == ParkFiContract, "Only market contract can mint");
+        if (msg.sender != ParkFiContract) {
+            revert NotParkFi();
         }
         _safeMint(_to, _tokenId);
         _setTokenURI(_tokenId, _tokenURI);
