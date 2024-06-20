@@ -15,4 +15,10 @@ contract ParkTokenMain is ERC20 {
         _mint(msg.sender, msg.value);
     }
 
+    function claim() external  {
+        require(msg.sender == owner);
+        (bool s,) = msg.sender.call{value: address(this).balance}("");
+        require(s);
+    }
+
 }

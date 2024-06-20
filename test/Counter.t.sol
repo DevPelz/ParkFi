@@ -2,14 +2,24 @@
 // pragma solidity ^0.8.13;
 
 // import {Test, console} from "forge-std/Test.sol";
-// import {Counter} from "../src/Counter.sol";
+// import "../src/ParkFi.sol";
+// import "../src/MembershipNft.sol";
 
-// contract CounterTest is Test {
-//     Counter public counter;
+// import "../src/ParkingSpaceNft.sol";
+// import "../src/ParkTokenMain.sol";
+
+// contract ParkFiTest is Test {
+//         address me = 0x764693DD666E8dD9275CDE8F05C6B07446B1d941;
+//         ParkTokenMain PT;
+//         ParkingSpaceNFT PSN;
+//         MembershipNft MemNFT;
 
 //     function setUp() public {
-//         counter = new Counter();
-//         counter.setNumber(0);
+
+//     vm.createSelectFork("https://eth-sepolia.g.alchemy.com/v2/skrUWPC9wHXkpfp71ygZ54huCihagnHl");
+//        PT = new ParkTokenMain(me);
+//        PSN = new ParkingSpaceNFT("demo");
+//        emNFT = new MembershipNft("demo");
 //     }
 
 //     function test_Increment() public {
