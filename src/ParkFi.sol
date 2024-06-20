@@ -32,7 +32,7 @@ contract ParkFi is Ownable {
     }
 
  struct ParkSpaceMetadata {
-        uint256 id;
+        uint256 psId;
         uint256 hourlyPrice;
         uint256 dailyPrice;
         uint256 validTill;
@@ -63,7 +63,7 @@ modifier isMember() {
   function verifyAndMintParkingSpace(uint256 _hPrice, uint256 _dPrice) external {
         ParkIds++;
        ParkSpaceMetadata storage info = tokenIdToParkSpaceMetadata[ParkIds];
-        info.id = ParkIds;
+        info.psId = ParkIds;
         info.hourlyPrice = _hPrice;
         info.dailyPrice = _dPrice;
         info.spaceOwner = msg.sender;
