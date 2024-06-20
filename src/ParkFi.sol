@@ -23,8 +23,8 @@ contract ParkFi is Ownable {
 
     event ParkSpaceMinted(uint256 indexed _tokenid, uint indexed _hPrice, uint indexed _dPrice);
     event NewMemberAdded(address indexed _newMember);
-    event CheckIn(uint256 indexed id_, address indexed member_);
-    event CheckedOut(uint256 indexed id_);
+    event CheckIn(uint256 indexed pfid_, address indexed member_);
+    event CheckedOut(uint256 indexed pfid_);
 
     enum DurationType {
         HOURLY,
@@ -43,7 +43,7 @@ contract ParkFi is Ownable {
 }
 
 
-mapping(uint256 _id => ParkSpaceMetadata) private tokenIdToParkSpaceMetadata;
+mapping(uint256 _pfId => ParkSpaceMetadata) private tokenIdToParkSpaceMetadata;
 
 modifier isMember() {
     if(MemNft.balanceOf(msg.sender) < 1){
@@ -79,8 +79,8 @@ modifier isMember() {
     emit NewMemberAdded(msg.sender);
   }
 
-  function checkIn(uint256 _id, DurationType _durationType, uint duration) external isMember{
-    ParkSpaceMetadata storage info = tokenIdToParkSpaceMetadata[_id];
+  function checkIn(uint256 _pfId, DurationType _durationType, uint duration) external isMember{
+    ParkSpaceMetadata storage info = tokenIdToParkSpaceMetadata[_pfId];
     if(info.isBeingUsed){
         revert NotAvailable();
     }
@@ -94,18 +94,18 @@ modifier isMember() {
     uint256 _amountH = duration  * info.hourlyPrice ;
     require(token.transferFrom(msg.sender, address(this), _amountH));
     require(token.transfer(info.spaceOwner, _amountH - protocolFees));
-    emit CheckIn(_id, msg.sender);
+    emit CheckIn(_pfId, msg.sender);
     }else{
     info.validTill = block.timestamp + duration;
     uint256 _amountD = duration  * info.dailyPrice;
     require(token.transferFrom(msg.sender, address(this), _amountD ));
     require(token.transfer(info.spaceOwner, _amountD - protocolFees));
-    emit CheckIn(_id, msg.sender);
+    emit CheckIn(_pfId, msg.sender);
     }
   }
 
-  function checkOut(uint256 _id) external isMember{
-     ParkSpaceMetadata storage info = tokenIdToParkSpaceMetadata[_id];
+  function checkOut(uint256 _pfId) external isMember{
+     ParkSpaceMetadata storage info = tokenIdToParkSpaceMetadata[_pfId];
      if(info.currentUser != msg.sender){
         revert UnAuthorized();
      }
@@ -117,7 +117,7 @@ modifier isMember() {
      info.isBeingUsed = false;
      info.validTill = 0;
 
-     emit CheckedOut(_id);
+     emit CheckedOut(_pfId);
   }
 
    function getAvailableParkingSpaces()
