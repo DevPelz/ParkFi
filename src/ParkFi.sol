@@ -120,9 +120,6 @@ modifier isMember() {
      emit CheckedOut(_id);
   }
 
-
-//   view functions
-
    function getAvailableParkingSpaces()
         public
         view
@@ -139,6 +136,30 @@ modifier isMember() {
         ParkSpaceMetadata[] memory items = new ParkSpaceMetadata[](unUsed);
         for (uint256 i = 0; i < totalNFT; i++) {
             if (!tokenIdToParkSpaceMetadata[i + 1].isBeingUsed) {
+                uint256 currentId = i + 1;
+                ParkSpaceMetadata storage currentItem = tokenIdToParkSpaceMetadata[currentId];
+                items[currentIndex] = currentItem;
+                currentIndex += 1;
+            }
+        }
+        return items;
+    }
+   function getMyParkingSpaces()
+        public
+        view
+        returns (ParkSpaceMetadata[] memory)
+    {
+        uint256 totalNFT = ParkIds;
+        uint256 used;
+        for (uint256 i = 0; i < totalNFT; i++) {
+            if (tokenIdToParkSpaceMetadata[i + 1].isBeingUsed && tokenIdToParkSpaceMetadata[i + 1].currentUser == msg.sender) {
+                used++;
+            }
+        }
+        uint256 currentIndex = 0;
+        ParkSpaceMetadata[] memory items = new ParkSpaceMetadata[](used);
+        for (uint256 i = 0; i < totalNFT; i++) {
+            if (tokenIdToParkSpaceMetadata[i + 1].isBeingUsed &&  tokenIdToParkSpaceMetadata[i + 1].currentUser == msg.sender) {
                 uint256 currentId = i + 1;
                 ParkSpaceMetadata storage currentItem = tokenIdToParkSpaceMetadata[currentId];
                 items[currentIndex] = currentItem;
